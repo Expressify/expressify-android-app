@@ -64,7 +64,7 @@ fun ExpressifyTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = expressifyTypography,
         content = content
     )
 }
