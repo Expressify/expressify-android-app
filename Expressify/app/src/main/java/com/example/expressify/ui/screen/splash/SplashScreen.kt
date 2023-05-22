@@ -1,4 +1,4 @@
-package com.example.expressify.ui.splash
+package com.example.expressify.ui.screen.splash
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
