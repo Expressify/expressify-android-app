@@ -5,12 +5,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.expressify.navigation.Screen
-import com.example.expressify.ui.splash.SplashScreen
+import com.example.expressify.ui.screen.home.HomeScreen
+import com.example.expressify.ui.screen.splash.SplashScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +36,7 @@ fun ExpressifyApp(
             }
 
             composable(Screen.Home.route){
-
+                HomeScreen()
             }
 
         }
