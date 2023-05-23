@@ -1,5 +1,6 @@
 package com.example.expressify.ui.screen.components
 
+import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -80,5 +81,39 @@ fun FlexWidthButton() {
             modifier = Modifier,
             onClick = {}
         )
+    }
+}
+
+@Composable
+fun BigButton(
+    text: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            Color.Black
+        ),
+        enabled = enabled,
+        modifier = modifier
+            .height(48.dp),
+
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BigButtonPreview() {
+    ExpressifyTheme() {
+        BigButton(
+            text = "Example",
+            onClick = {})
     }
 }
