@@ -3,10 +3,19 @@
     <string name="greet_user">Halo, %s!</string>
     <string name="user_feelings">Bagaimana perasaanmu hari ini?</string>
     <string name="input_text_feeling_ph">Ceritakan perasaan kamu…</string>
+    <string name="input_email">Masukkan Email Anda</string>
+    <string name="input_password">Masukkan Password Anda</string>
+    <string name="input_name">Masukkan Nama Anda</string>
+    <string name="confirm_pass">Konfirmasi Password Anda</string>
     <string name="save_button_ph">Simpan</string>
     <string name="knowingMood">Ketahui Keadaan Moodmu</string>
     <string name="knowingMood_desc">Dapatkan gambaran kondisi mood kamu melalui fitur mood detection yang kece di sini!</string>
     <string name="start_button_ph">Mulai</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="didnt_have_acc">Belum punya akun?</string>
+    <string name="already_have_acc">Sudah punya akun?</string>
+    <string name="create_acc">Buat Akun</string>
     <string name="artikel_title">Artikel</string>
 
     <string name="menu_home">Home</string>
