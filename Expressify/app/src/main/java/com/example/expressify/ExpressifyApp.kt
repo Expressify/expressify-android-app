@@ -40,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.expressify.navigation.NavigationItem
 import com.example.expressify.navigation.Screen
 import com.example.expressify.ui.screen.home.HomeScreen
+import com.example.expressify.ui.screen.jurnal.JurnalScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
 
@@ -79,6 +80,10 @@ fun ExpressifyApp(
 
             composable(Screen.Home.route) {
                 HomeScreen()
+            }
+
+            composable(Screen.Jurnal.route){
+                JurnalScreen(tambahJurnal = {})
             }
 
         }
