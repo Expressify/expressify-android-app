@@ -41,7 +41,9 @@ import androidx.compose.ui.unit.dp
 import com.example.expressify.R
 import com.example.expressify.model.dummyArtikel
 import com.example.expressify.ui.screen.components.ArtikelItem
+import com.example.expressify.ui.screen.components.Divider
 import com.example.expressify.ui.screen.components.FlexWidthButton
+import com.example.expressify.ui.screen.components.JurnalShortCut
 import com.example.expressify.ui.screen.components.MaxWidthButton
 import com.example.expressify.ui.theme.ExpressifyTheme
 import com.example.expressify.ui.theme.FourthColor
@@ -55,25 +57,14 @@ fun HomeScreen() {
     ) {
         Banner()
         Spacer(modifier = Modifier.padding(4.dp))
-        JurnalShortCut(name = "Agus", onClick = {})
-        Spacer(modifier = Modifier.padding(10.dp))
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
-                .background(GraySix)
-        )
+        JurnalShortCut(title = stringResource(id = R.string.greet_user, "Agus"), onClick = {})
+        Divider()
         KeadaanMood(
             modifier = Modifier
                 .align(CenterHorizontally),
             onClick = {}
         )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
-                .background(GraySix)
-        )
+        Divider()
         QuickListArtikel()
 
     }
@@ -178,33 +169,6 @@ fun KeadaanMood(
     }
 }
 
-@Composable
-fun JurnalShortCut(
-    name: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = stringResource(id = R.string.greet_user, name),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(horizontal = 16.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.user_feelings),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(horizontal = 16.dp)
-        )
-        InputText()
-        MaxWidthButton(
-            text = stringResource(id = R.string.save_button_ph),
-            modifier = modifier,
-            onClick = onClick
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
