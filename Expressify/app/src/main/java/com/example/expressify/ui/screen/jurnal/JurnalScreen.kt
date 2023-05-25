@@ -1,15 +1,8 @@
 package com.example.expressify.ui.screen.jurnal
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,20 +31,6 @@ fun JurnalScreen(
             )
             Divider()
         }
-        items(dummyJurnal, key = { it.id }) { jurnal ->
-            JurnalItem(text = jurnal.text, date = jurnal.date, attention = jurnal.attention)
-        }
-    }
-}
-
-@Composable
-fun ListJurnal(
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier.padding(top = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
         items(dummyJurnal, key = { it.id }) { jurnal ->
             JurnalItem(text = jurnal.text, date = jurnal.date, attention = jurnal.attention)
         }

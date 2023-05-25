@@ -2,16 +2,13 @@ package com.example.expressify.ui.screen.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -44,10 +41,8 @@ import com.example.expressify.ui.screen.components.ArtikelItem
 import com.example.expressify.ui.screen.components.Divider
 import com.example.expressify.ui.screen.components.FlexWidthButton
 import com.example.expressify.ui.screen.components.JurnalShortCut
-import com.example.expressify.ui.screen.components.MaxWidthButton
 import com.example.expressify.ui.theme.ExpressifyTheme
 import com.example.expressify.ui.theme.FourthColor
-import com.example.expressify.ui.theme.GraySix
 
 @Composable
 fun HomeScreen() {
