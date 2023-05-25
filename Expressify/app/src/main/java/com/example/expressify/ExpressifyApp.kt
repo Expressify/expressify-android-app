@@ -6,22 +6,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Assignment
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LibraryBooks
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +35,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.expressify.navigation.NavigationItem
 import com.example.expressify.navigation.Screen
+import com.example.expressify.ui.screen.artikel.ArtikelScreen
 import com.example.expressify.ui.screen.home.HomeScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
@@ -84,6 +81,10 @@ fun ExpressifyApp(
 
             composable(Screen.Jurnal.route){
                 JurnalScreen(tambahJurnal = {})
+            }
+
+            composable(Screen.Artikel.route){
+                ArtikelScreen(modifier.padding(horizontal = 16.dp))
             }
 
         }
