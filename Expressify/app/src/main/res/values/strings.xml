@@ -18,6 +18,11 @@
     <string name="create_acc">Buat Akun</string>
     <string name="artikel_title">Artikel</string>
 
+    <string name="moodify_jargon">Embrace your mood, embrace yourself.</string>
+    <string name="moodify_desc">Melalui fitur ini kamu dapat mengetahui perasaan (mood) kamu saat ini. Setelah itu, kami dapat merekomendasikan beberapa hal yang sesuai dengan perasaan kamu hari ini. Yuk tunggu apalagi?</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_jurnal">Jurnal</string>
     <string name="menu_moodify">Moodify</string>

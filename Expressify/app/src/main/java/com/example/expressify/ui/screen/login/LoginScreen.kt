@@ -20,17 +20,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expressify.R
 import com.example.expressify.ui.screen.components.BigButton
 import com.example.expressify.ui.screen.components.InputText
-import com.example.expressify.ui.theme.ExpressifyTheme
-
 
 @Composable
-fun LoginScreenContent(
-    modifier: Modifier = Modifier
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    onLoginSuccess: () -> Unit,
+    onRegisterClick: () -> Unit
+) {
+    LoginContent(
+        onLoginClick = {
+            onLoginSuccess()
+        },
+        onRegisterClick = onRegisterClick
+    )
+}
+@Composable
+fun LoginContent(
+    modifier: Modifier = Modifier,
+    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -62,7 +74,7 @@ fun LoginScreenContent(
         )
         BigButton(
             text = stringResource(id = R.string.login),
-            onClick = {},
+            onClick = onLoginClick,
             modifier = Modifier
                 .padding(start = 80.dp, end = 80.dp, bottom = 8.dp)
                 .fillMaxWidth()
@@ -79,16 +91,8 @@ fun LoginScreenContent(
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {  }
+                modifier = Modifier.clickable { onRegisterClick() }
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    ExpressifyTheme {
-        LoginScreenContent()
     }
 }
