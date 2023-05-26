@@ -20,12 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -35,8 +38,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.expressify.navigation.NavigationItem
 import com.example.expressify.navigation.Screen
-import com.example.expressify.ui.screen.artikel.ArtikelScreen
+import com.example.expressify.navigation.routeWithoutTopBar
+import com.example.expressify.ui.MainViewModel
+import com.example.expressify.ui.ViewModelFactory
+import com.example.expressify.ui.common.UiState
 import com.example.expressify.ui.screen.home.HomeScreen
+import com.example.expressify.ui.screen.login.LoginScreen
+import com.example.expressify.ui.screen.moodify.MoodifyScreen
+import com.example.expressify.ui.screen.register.RegisterScreen
+import com.example.expressify.ui.screen.artikel.ArtikelScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
@@ -46,17 +56,21 @@ import com.example.expressify.ui.theme.ExpressifyTheme
 fun ExpressifyApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    viewModel: MainViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    )
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val isLogin by viewModel.loginState.collectAsState(initial = UiState.Loading)
 
     Scaffold(bottomBar = {
-        if (currentRoute != Screen.Splash.route) {
+        if (!routeWithoutTopBar.contains(currentRoute)) {
             BottomBar(navController = navController)
         }
     },
         topBar = {
-            if (currentRoute != Screen.Splash.route) {
+            if (!routeWithoutTopBar.contains(currentRoute)) {
                 TopBar()
             }
         }
@@ -70,7 +84,11 @@ fun ExpressifyApp(
                 SplashScreen(
                     navigateNext = {
                         navController.popBackStack()
-                        navController.navigate(Screen.Home.route)
+                        if (isLogin is UiState.Success && (isLogin as UiState.Success<Boolean>).data) {
+                            navController.navigate(Screen.Home.route)
+                        } else {
+                            navController.navigate(Screen.Login.route)
+                        }
                     }
                 )
             }
@@ -78,15 +96,28 @@ fun ExpressifyApp(
             composable(Screen.Home.route) {
                 HomeScreen()
             }
-
+            composable(Screen.Login.route) {
+                LoginScreen(
+                    onLoginSuccess = {
+                        viewModel.login()
+                        navController.popBackStack()
+                        navController.navigate(Screen.Home.route)
+                    },
+                    onRegisterClick = { navController.navigate(Screen.Register.route) }
+                )
+            }
+            composable(Screen.Register.route) {
+                RegisterScreen(onLoginClick = { navController.navigateUp() })
+            }
+            composable(Screen.Moodify.route) {
+                MoodifyScreen()
+            }
             composable(Screen.Jurnal.route){
                 JurnalScreen(tambahJurnal = {})
             }
-
             composable(Screen.Artikel.route){
                 ArtikelScreen(modifier.padding(horizontal = 16.dp))
             }
-
         }
 
     }

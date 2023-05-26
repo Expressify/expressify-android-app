@@ -28,7 +28,17 @@ import com.example.expressify.ui.screen.components.InputText
 import com.example.expressify.ui.theme.ExpressifyTheme
 
 @Composable
+fun RegisterScreen(
+    onLoginClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    RegisterContent(
+        onLoginClick = onLoginClick
+    )
+}
+@Composable
 fun RegisterContent(
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -93,7 +103,7 @@ fun RegisterContent(
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {  }
+                modifier = Modifier.clickable { onLoginClick() }
             )
         }
     }
@@ -103,6 +113,8 @@ fun RegisterContent(
 @Composable
 fun RegisterScreenPreview() {
     ExpressifyTheme {
-        RegisterContent()
+        RegisterContent(
+            onLoginClick = {}
+        )
     }
 }

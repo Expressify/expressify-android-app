@@ -7,4 +7,12 @@ sealed class Screen (val route: String){
     object Moodify: Screen("moodify")
     object Artikel: Screen("artikel")
     object Profil: Screen("profil")
+    object Login: Screen("login")
+    object Register: Screen("Register")
 }
+
+val routeWithoutTopBar = listOf(
+    Screen.Splash.route,
+    Screen.Login.route,
+    Screen.Register.route,
+)
