@@ -2,16 +2,13 @@ package com.example.expressify.ui.screen.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -41,11 +38,11 @@ import androidx.compose.ui.unit.dp
 import com.example.expressify.R
 import com.example.expressify.model.dummyArtikel
 import com.example.expressify.ui.screen.components.ArtikelItem
+import com.example.expressify.ui.screen.components.Divider
 import com.example.expressify.ui.screen.components.FlexWidthButton
-import com.example.expressify.ui.screen.components.MaxWidthButton
+import com.example.expressify.ui.screen.components.JurnalShortCut
 import com.example.expressify.ui.theme.ExpressifyTheme
 import com.example.expressify.ui.theme.FourthColor
-import com.example.expressify.ui.theme.GraySix
 
 @Composable
 fun HomeScreen() {
@@ -55,25 +52,14 @@ fun HomeScreen() {
     ) {
         Banner()
         Spacer(modifier = Modifier.padding(4.dp))
-        JurnalShortCut(name = "Agus", onClick = {})
-        Spacer(modifier = Modifier.padding(10.dp))
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
-                .background(GraySix)
-        )
+        JurnalShortCut(title = stringResource(id = R.string.greet_user, "Agus"), onClick = {})
+        Divider()
         KeadaanMood(
             modifier = Modifier
                 .align(CenterHorizontally),
             onClick = {}
         )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
-                .background(GraySix)
-        )
+        Divider()
         QuickListArtikel()
 
     }
@@ -178,33 +164,6 @@ fun KeadaanMood(
     }
 }
 
-@Composable
-fun JurnalShortCut(
-    name: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = stringResource(id = R.string.greet_user, name),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(horizontal = 16.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.user_feelings),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(horizontal = 16.dp)
-        )
-        InputText()
-        MaxWidthButton(
-            text = stringResource(id = R.string.save_button_ph),
-            modifier = modifier,
-            onClick = onClick
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

@@ -36,7 +36,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.example.expressify.navigation.NavigationItem
 import com.example.expressify.navigation.Screen
 import com.example.expressify.navigation.routeWithoutTopBar
@@ -44,10 +43,11 @@ import com.example.expressify.ui.MainViewModel
 import com.example.expressify.ui.ViewModelFactory
 import com.example.expressify.ui.common.UiState
 import com.example.expressify.ui.screen.home.HomeScreen
-import com.example.expressify.ui.screen.login.LoginContent
 import com.example.expressify.ui.screen.login.LoginScreen
 import com.example.expressify.ui.screen.moodify.MoodifyScreen
 import com.example.expressify.ui.screen.register.RegisterScreen
+import com.example.expressify.ui.screen.artikel.ArtikelScreen
+import com.example.expressify.ui.screen.jurnal.JurnalScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
 
@@ -111,6 +111,12 @@ fun ExpressifyApp(
             }
             composable(Screen.Moodify.route) {
                 MoodifyScreen()
+            }
+            composable(Screen.Jurnal.route){
+                JurnalScreen(tambahJurnal = {})
+            }
+            composable(Screen.Artikel.route){
+                ArtikelScreen(modifier.padding(horizontal = 16.dp))
             }
         }
 

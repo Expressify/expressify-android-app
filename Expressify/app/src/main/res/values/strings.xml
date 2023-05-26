@@ -28,4 +28,8 @@
     <string name="menu_moodify">Moodify</string>
     <string name="menu_artikel">Artikel</string>
     <string name="menu_profil">Profil</string>
+    <string name="tambah_jurnal_title">Tambah Jurnal</string>
+    <string name="status_jurnal_success">Terkirim</string>
+    <string name="status_jurnal_attention">Direkomendasikan untuk berkonsultasi ke psikolog</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 </resources>
