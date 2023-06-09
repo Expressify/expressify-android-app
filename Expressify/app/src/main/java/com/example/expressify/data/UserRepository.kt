@@ -10,8 +10,13 @@ class UserRepository (private val pref: UserPreference) {
         return pref.getUser()
     }
 
-    suspend fun login() {
-        pref.login()
+    suspend fun login(
+        name: String,
+        email: String,
+        id: String,
+        token: String
+    ) {
+        pref.login(name, email, id, token)
     }
 
     suspend fun logout() {

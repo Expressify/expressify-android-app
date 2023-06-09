@@ -1,25 +1,31 @@
 package com.example.expressify.ui
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.expressify.data.UserRepository
+import com.example.expressify.data.remote.request.LoginRequest
+import com.example.expressify.data.remote.response.LoginResponse
+import com.example.expressify.data.remote.retrofit.ApiConfig
 import com.example.expressify.model.UserModel
 import com.example.expressify.ui.common.UiState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainViewModel (private val repository: UserRepository): ViewModel() {
 
-    private val _loginState: MutableStateFlow<UiState<Boolean>> = MutableStateFlow(UiState.Loading)
-    val loginState: StateFlow<UiState<Boolean>> = _loginState
+    val isLogin = mutableStateOf(false)
+    val progressBar = mutableStateOf(false)
+    val isSuccessLoading = mutableStateOf(false)
+    val imageErrorAuth = mutableStateOf(false)
 
     init {
         getUser()
@@ -29,18 +35,54 @@ class MainViewModel (private val repository: UserRepository): ViewModel() {
         viewModelScope.launch {
             repository.getUser()
                 .catch {
-                    _loginState.value = UiState.Error(it.message.toString())
+                    isLogin.value = false
                 }
                 .collect{
-                    _loginState.value = UiState.Success(it.isLogin)
+                    isLogin.value = it.isLogin
                 }
         }
     }
 
-    fun login() {
-        _loginState.value = UiState.Loading
+    fun login (email: String, password:String) {
+        progressBar.value = true
+        val client = ApiConfig.getApiService().login(LoginRequest(email, password))
+        client.enqueue(
+            object : Callback<LoginResponse> {
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    progressBar.value = false
+                    if (response.isSuccessful && response.body()?.status == true) {
+                        response.body()?.let {
+                            val loginData = it.data
+                            addLoginData(loginData.nama, loginData.email, loginData.id, loginData.accessToken)
+
+                            isSuccessLoading.value = true
+
+                            getUser()
+                        }
+                    } else {
+                        imageErrorAuth.value = true
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    progressBar.value = false
+                    imageErrorAuth.value = true
+                }
+            }
+        )
+    }
+
+    private fun addLoginData(
+        name: String,
+        email: String,
+        id: String,
+        token: String
+    ) {
         viewModelScope.launch {
-            repository.login()
+            repository.login(name, email, id, token)
         }
     }
 }
