@@ -8,11 +8,13 @@ sealed class Screen (val route: String){
     object Artikel: Screen("artikel")
     object Profil: Screen("profil")
     object Login: Screen("login")
-    object Register: Screen("Register")
+    object Register: Screen("register")
+    object Camera: Screen("camera")
 }
 
 val routeWithoutTopBar = listOf(
     Screen.Splash.route,
     Screen.Login.route,
     Screen.Register.route,
+    Screen.Camera.route
 )

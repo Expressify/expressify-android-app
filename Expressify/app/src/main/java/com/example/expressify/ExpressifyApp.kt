@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -47,6 +48,7 @@ import com.example.expressify.ui.screen.login.LoginScreen
 import com.example.expressify.ui.screen.moodify.MoodifyScreen
 import com.example.expressify.ui.screen.register.RegisterScreen
 import com.example.expressify.ui.screen.artikel.ArtikelScreen
+import com.example.expressify.ui.screen.camera.CameraScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
@@ -62,7 +64,6 @@ fun ExpressifyApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val isLogin by viewModel.loginState.collectAsState(initial = UiState.Loading)
 
     Scaffold(bottomBar = {
         if (!routeWithoutTopBar.contains(currentRoute)) {
@@ -84,11 +85,7 @@ fun ExpressifyApp(
                 SplashScreen(
                     navigateNext = {
                         navController.popBackStack()
-                        if (isLogin is UiState.Success && (isLogin as UiState.Success<Boolean>).data) {
-                            navController.navigate(Screen.Home.route)
-                        } else {
-                            navController.navigate(Screen.Login.route)
-                        }
+                        navController.navigate(Screen.Login.route)
                     }
                 )
             }
@@ -97,26 +94,34 @@ fun ExpressifyApp(
                 HomeScreen()
             }
             composable(Screen.Login.route) {
-                LoginScreen(
-                    onLoginSuccess = {
-                        viewModel.login()
-                        navController.popBackStack()
+                if (viewModel.isLogin.value) {
+                    LaunchedEffect(key1 = Unit) {
                         navController.navigate(Screen.Home.route)
-                    },
-                    onRegisterClick = { navController.navigate(Screen.Register.route) }
-                )
+                    }
+                } else {
+                    LoginScreen(
+                        onLoginClick = { email, password ->
+                            viewModel.login(email, password)
+                        },
+                        onRegisterClick = { navController.navigate(Screen.Register.route) },
+                        loadingProgressBar = viewModel.progressBar.value
+                    )
+                }
             }
             composable(Screen.Register.route) {
                 RegisterScreen(onLoginClick = { navController.navigateUp() })
             }
             composable(Screen.Moodify.route) {
-                MoodifyScreen()
+                MoodifyScreen(navigateToCamera = {navController.navigate(Screen.Camera.route)})
             }
             composable(Screen.Jurnal.route){
                 JurnalScreen(tambahJurnal = {})
             }
             composable(Screen.Artikel.route){
                 ArtikelScreen(modifier.padding(horizontal = 16.dp))
+            }
+            composable(Screen.Camera.route) {
+                CameraScreen()
             }
         }
 
@@ -199,7 +204,7 @@ fun BottomBar(
                     ),
                     onClick = {
                         navController.navigate(item.screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
+                            popUpTo(Screen.Home.route) {
                                 saveState = true
                             }
                             restoreState = true

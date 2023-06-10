@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,26 +28,57 @@ import androidx.compose.ui.unit.dp
 import com.example.expressify.R
 import com.example.expressify.ui.screen.components.BigButton
 import com.example.expressify.ui.screen.components.InputText
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.expressify.ui.screen.login.components.EmailOutTextField
+import com.example.expressify.ui.screen.login.components.PasswordOutTextField
+import com.example.expressify.ui.screen.login.components.ProgressBarLoading
+import com.example.expressify.ui.theme.ExpressifyTheme
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onLoginSuccess: () -> Unit,
-    onRegisterClick: () -> Unit
+    onLoginClick: (email: String, password: String) -> Unit,
+    onRegisterClick: () -> Unit,
+    loadingProgressBar: Boolean
 ) {
+
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+
     LoginContent(
-        onLoginClick = {
-            onLoginSuccess()
+        email = email,
+        password = password,
+        onLoginClick = { onLoginClick(email, password) },
+        onRegisterClick = onRegisterClick,
+        loadingProgressBar = loadingProgressBar,
+        onEmailChange = {
+            email = it
         },
-        onRegisterClick = onRegisterClick
+        onPasswordChange = {
+            password = it
+        },
+        onEmailClear = { email = "" }
     )
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginContent(
+    email: String,
+    password: String,
     modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    loadingProgressBar: Boolean,
+    onEmailClear: () -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -58,19 +93,22 @@ fun LoginContent(
             contentDescription = stringResource(id = R.string.app_name),
             modifier = Modifier.padding(bottom = 52.dp)
         )
-        InputText(
-            placeholder = stringResource(id = R.string.input_email),
-            onValueChange = {},
+        EmailOutTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 44.dp, end = 44.dp, bottom = 24.dp)
+                .padding(start = 44.dp, end = 44.dp, bottom = 18.dp),
+            textValue = email,
+            onValueChange = onEmailChange,
+            onClear = onEmailClear,
+            onNext = { focusManager.moveFocus(FocusDirection.Down) }
         )
-        InputText(
-            placeholder = stringResource(id = R.string.input_password),
-            onValueChange = {},
+        PasswordOutTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 44.dp, end = 44.dp, bottom = 36.dp)
+                .padding(start = 44.dp, end = 44.dp, bottom = 36.dp),
+            textValue = password,
+            onValueChange = onPasswordChange,
+            onDone = { focusManager.clearFocus() }
         )
         BigButton(
             text = stringResource(id = R.string.login),
@@ -94,5 +132,24 @@ fun LoginContent(
                 modifier = Modifier.clickable { onRegisterClick() }
             )
         }
+    }
+
+    ProgressBarLoading(isLoading = loadingProgressBar)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview() {
+    ExpressifyTheme() {
+        LoginContent(
+            email = "gitansahltw@gmail.com",
+            password = "gitansahl",
+            onLoginClick = { /*TODO*/ },
+            onRegisterClick = { /*TODO*/ },
+            onEmailChange = {},
+            loadingProgressBar = true,
+            onEmailClear = {},
+            onPasswordChange = {}
+        )
     }
 }
