@@ -29,7 +29,7 @@ import com.example.expressify.ui.theme.YellowDanger
 fun JurnalItem(
     modifier: Modifier = Modifier,
     text: String,
-    date: String,
+//    date: String,
     attention: Boolean = false
 ) {
     Card(
@@ -39,12 +39,12 @@ fun JurnalItem(
     ) {
         Column(modifier = modifier.padding(8.dp)) {
             Row {
-                Text(
-                    text = date,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
+//                Text(
+//                    text = date,
+//                    style = MaterialTheme.typography.titleMedium,
+//                    fontWeight = FontWeight.Bold,
+//                    modifier = Modifier.weight(1f)
+//                )
                 if (attention) {
                     Icon(
                         imageVector = Icons.Default.Warning,
@@ -90,6 +90,6 @@ fun JurnalItem(
 @Composable
 fun JurnalItemPreview() {
     ExpressifyTheme {
-        JurnalItem(attention = true, text = stringResource(id = R.string.lorem_ipsum), date = "12 Mei 2023")
+        JurnalItem(attention = true, text = stringResource(id = R.string.lorem_ipsum))
     }
 }
