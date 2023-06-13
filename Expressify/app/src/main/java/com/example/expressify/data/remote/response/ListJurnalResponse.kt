@@ -26,5 +26,8 @@ data class Jurnals(
 	val prediction: Any? = null,
 
 	@field:SerializedName("id")
-	val id: String
+	val id: String,
+
+	@field:SerializedName("created_at")
+	val date: String,
 )

@@ -24,12 +24,14 @@ import com.example.expressify.R
 import com.example.expressify.ui.theme.ExpressifyTheme
 import com.example.expressify.ui.theme.GreenSuccess
 import com.example.expressify.ui.theme.YellowDanger
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun JurnalItem(
     modifier: Modifier = Modifier,
     text: String,
-//    date: String,
+    date: String,
     attention: Boolean = false
 ) {
     Card(
@@ -39,12 +41,12 @@ fun JurnalItem(
     ) {
         Column(modifier = modifier.padding(8.dp)) {
             Row {
-//                Text(
-//                    text = date,
-//                    style = MaterialTheme.typography.titleMedium,
-//                    fontWeight = FontWeight.Bold,
-//                    modifier = Modifier.weight(1f)
-//                )
+                Text(
+                    text = convertDateFormat(date),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
                 if (attention) {
                     Icon(
                         imageVector = Icons.Default.Warning,
@@ -86,10 +88,17 @@ fun JurnalItem(
     }
 }
 
+fun convertDateFormat(dateString: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd MMMM yyyy, hh:mm a", Locale.getDefault())
+    val date = inputFormat.parse(dateString)
+    return outputFormat.format(date)
+}
+
 @Preview
 @Composable
 fun JurnalItemPreview() {
     ExpressifyTheme {
-        JurnalItem(attention = true, text = stringResource(id = R.string.lorem_ipsum))
+        JurnalItem(attention = true, text = stringResource(id = R.string.lorem_ipsum), date="12 Mei 2023")
     }
 }
