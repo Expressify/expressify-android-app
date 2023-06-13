@@ -61,7 +61,7 @@ fun JurnalScreen(
         
         items(journals, key = { it.id }) { jurnal ->
             val att = jurnal.prediction?.equals("Terindikasi Mental Illness") == true
-            JurnalItem(text = jurnal.jurnal, attention = att)
+            JurnalItem(text = jurnal.jurnal, attention = att, date= jurnal.date)
         }
     }
 
