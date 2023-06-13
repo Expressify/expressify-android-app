@@ -33,10 +33,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.expressify.navigation.NavigationItem
 import com.example.expressify.navigation.Screen
 import com.example.expressify.navigation.routeWithoutTopBar
@@ -48,6 +50,7 @@ import com.example.expressify.ui.screen.login.LoginScreen
 import com.example.expressify.ui.screen.moodify.MoodifyScreen
 import com.example.expressify.ui.screen.register.RegisterScreen
 import com.example.expressify.ui.screen.artikel.ArtikelScreen
+import com.example.expressify.ui.screen.artikel.DetailScreen
 import com.example.expressify.ui.screen.camera.CameraScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
@@ -108,8 +111,8 @@ fun ExpressifyApp(
                             restoreState = true
                             launchSingleTop = true
                         }
-                    }
-                )
+                    },
+                    navigateToDetailArtikel = {artikelId -> navController.navigate(Screen.DetailArtikel.createRoute(artikelId))})
             }
             composable(Screen.Login.route) {
                 if (viewModel.isLogin.value) {
@@ -136,7 +139,15 @@ fun ExpressifyApp(
                 JurnalScreen()
             }
             composable(Screen.Artikel.route){
-                ArtikelScreen(modifier.padding(horizontal = 16.dp))
+                ArtikelScreen(modifier.padding(horizontal = 16.dp),
+                navigateToDetail = {artikelId -> navController.navigate(Screen.DetailArtikel.createRoute(artikelId))})
+            }
+            composable(
+                route = Screen.DetailArtikel.route,
+                arguments = listOf(navArgument("artikelId") { type = NavType.LongType }),
+            ){
+                val id = it.arguments?.getLong("artikelId") ?: -1L
+                DetailScreen(artikelId = id, navigateBack = { navController.navigateUp() })
             }
             composable(Screen.Camera.route) {
                 CameraScreen()
