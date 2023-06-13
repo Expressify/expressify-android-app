@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.expressify.di.Injection
+import com.example.expressify.ui.screen.artikel.DetailArtikelViewModel
 import com.example.expressify.ui.screen.jurnal.JurnalViewModel
 import java.lang.IllegalArgumentException
 
@@ -17,6 +18,9 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.NewInsta
             }
             modelClass.isAssignableFrom(JurnalViewModel::class.java) -> {
                 JurnalViewModel(Injection.provideUserRepository(context)) as T
+            }
+            modelClass.isAssignableFrom(DetailArtikelViewModel::class.java) -> {
+                DetailArtikelViewModel(Injection.provideArtikelRepository(context)) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

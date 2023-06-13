@@ -10,11 +10,15 @@ sealed class Screen (val route: String){
     object Login: Screen("login")
     object Register: Screen("register")
     object Camera: Screen("camera")
+    object DetailArtikel: Screen("detail/{artikelId}"){
+        fun createRoute(artikelId: Long) = "detail/$artikelId"
+    }
 }
 
 val routeWithoutTopBar = listOf(
     Screen.Splash.route,
     Screen.Login.route,
     Screen.Register.route,
-    Screen.Camera.route
+    Screen.Camera.route,
+    Screen.DetailArtikel.route
 )
