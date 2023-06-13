@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,38 +28,58 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.expressify.R
 import com.example.expressify.model.dummyArtikel
+import com.example.expressify.ui.ViewModelFactory
 import com.example.expressify.ui.screen.components.ArtikelItem
 import com.example.expressify.ui.screen.components.Divider
 import com.example.expressify.ui.screen.components.FlexWidthButton
 import com.example.expressify.ui.screen.components.JurnalShortCut
+import com.example.expressify.ui.screen.jurnal.JurnalViewModel
+import com.example.expressify.ui.screen.login.components.ProgressBarLoading
 import com.example.expressify.ui.theme.ExpressifyTheme
 import com.example.expressify.ui.theme.FourthColor
 
 @Composable
-fun HomeScreen() {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
+fun HomeScreen(
+    onClick: () -> Unit,
+    moveToJurnal: () -> Unit,
+) {
+
+    val viewModel: JurnalViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         Banner()
         Spacer(modifier = Modifier.padding(4.dp))
-        JurnalShortCut(title = stringResource(id = R.string.greet_user, "Agus"), onClick = {})
+        JurnalShortCut(
+            title = stringResource(id = R.string.greet_user, viewModel.getName()),
+            moveToJurnal = moveToJurnal
+        )
         Divider()
         KeadaanMood(
             modifier = Modifier
                 .align(CenterHorizontally),
-            onClick = {}
+            onClick = onClick
         )
         Divider()
         QuickListArtikel()
@@ -79,36 +101,6 @@ fun Banner(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun InputText(
-    modifier: Modifier = Modifier,
-) {
-    TextField(
-        value = "",
-        onValueChange = {},
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            disabledIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-        placeholder = {
-            Text(
-                text = stringResource(id = R.string.input_text_feeling_ph)
-            )
-        },
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .border(
-                BorderStroke(1.dp, Color.Black),
-                shape = RoundedCornerShape(16.dp)
-            )
-    )
-}
 
 @Composable
 fun QuickListArtikel(
@@ -124,7 +116,7 @@ fun QuickListArtikel(
         LazyRow(
             modifier = modifier.padding(8.dp)
         ) {
-            items(dummyArtikel, key = {it.title}){ artikel ->
+            items(dummyArtikel, key = { it.title }) { artikel ->
                 ArtikelItem(artikel = artikel)
             }
         }
@@ -169,6 +161,6 @@ fun KeadaanMood(
 @Composable
 fun HomeScreenPreview() {
     ExpressifyTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }

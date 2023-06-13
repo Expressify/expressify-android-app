@@ -95,7 +95,25 @@ fun ExpressifyApp(
             }
 
             composable(Screen.Home.route) {
-                HomeScreen()
+                HomeScreen(onClick = {
+                    navController.navigate(Screen.Moodify.route){
+                        popUpTo(Screen.Home.route) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                },
+                    moveToJurnal = {
+                        navController.navigate(Screen.Jurnal.route){
+                            popUpTo(Screen.Home.route) {
+                                saveState = true
+                            }
+                            restoreState = true
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
             composable(Screen.Login.route) {
                 if (viewModel.isLogin.value) {
@@ -119,7 +137,7 @@ fun ExpressifyApp(
                 MoodifyScreen(navigateToCamera = {navController.navigate(Screen.Camera.route)})
             }
             composable(Screen.Jurnal.route){
-                JurnalScreen(tambahJurnal = {})
+                JurnalScreen()
             }
             composable(Screen.Artikel.route){
                 ArtikelScreen(modifier.padding(horizontal = 16.dp))
