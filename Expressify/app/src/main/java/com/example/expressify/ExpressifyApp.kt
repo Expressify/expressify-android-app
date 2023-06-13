@@ -1,5 +1,6 @@
 package com.example.expressify
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,10 +34,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.expressify.navigation.NavigationItem
 import com.example.expressify.navigation.Screen
 import com.example.expressify.navigation.routeWithoutTopBar
@@ -50,6 +53,7 @@ import com.example.expressify.ui.screen.register.RegisterScreen
 import com.example.expressify.ui.screen.artikel.ArtikelScreen
 import com.example.expressify.ui.screen.camera.CameraScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
+import com.example.expressify.ui.screen.profile.ProfileScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
 
@@ -121,7 +125,35 @@ fun ExpressifyApp(
                 ArtikelScreen(modifier.padding(horizontal = 16.dp))
             }
             composable(Screen.Camera.route) {
-                CameraScreen()
+                CameraScreen(
+                    onPredict = {
+                        navController.navigate(Screen.PredictMood.createRoute(it)) {
+                            popUpTo(Screen.Moodify.route)
+                        }
+                    }
+                )
+            }
+            composable(Screen.Profil.route) {
+                ProfileScreen(
+                    name = viewModel.name.value,
+                    email = viewModel.email.value,
+                    onLogoutClick = {
+                        viewModel.logout()
+                        navController.popBackStack(
+                            route = Screen.Login.route,
+                            inclusive = false
+                        )
+                    }
+                )
+            }
+            composable(
+                route = Screen.PredictMood.route,
+                arguments = listOf(navArgument("uri"){
+                    type = NavType.StringType
+                })
+            ) {
+                val uri = it.arguments?.getString("uri") ?: ""
+
             }
         }
 

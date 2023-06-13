@@ -22,6 +22,7 @@
     <string name="moodify_desc">Melalui fitur ini kamu dapat mengetahui perasaan (mood) kamu saat ini. Setelah itu, kami dapat merekomendasikan beberapa hal yang sesuai dengan perasaan kamu hari ini. Yuk tunggu apalagi?</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
+    <string name="logout">Keluar</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_jurnal">Jurnal</string>

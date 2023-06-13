@@ -22,4 +22,5 @@ class UserRepository (private val pref: UserPreference) {
     suspend fun logout() {
         pref.logout()
     }
+
 }

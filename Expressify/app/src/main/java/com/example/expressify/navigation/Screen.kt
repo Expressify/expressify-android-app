@@ -10,6 +10,9 @@ sealed class Screen (val route: String){
     object Login: Screen("login")
     object Register: Screen("register")
     object Camera: Screen("camera")
+    object PredictMood: Screen("moodify/{uri}") {
+        fun createRoute(uri: String) ="moodify/$uri"
+    }
 }
 
 val routeWithoutTopBar = listOf(

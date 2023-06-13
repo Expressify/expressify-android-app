@@ -26,6 +26,8 @@ class MainViewModel (private val repository: UserRepository): ViewModel() {
     val progressBar = mutableStateOf(false)
     val isSuccessLoading = mutableStateOf(false)
     val imageErrorAuth = mutableStateOf(false)
+    val email = mutableStateOf("")
+    val name = mutableStateOf("")
 
     init {
         getUser()
@@ -39,6 +41,8 @@ class MainViewModel (private val repository: UserRepository): ViewModel() {
                 }
                 .collect{
                     isLogin.value = it.isLogin
+                    email.value = it.email
+                    name.value = it.name
                 }
         }
     }
@@ -84,5 +88,13 @@ class MainViewModel (private val repository: UserRepository): ViewModel() {
         viewModelScope.launch {
             repository.login(name, email, id, token)
         }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+        getUser()
+        isLogin.value = false
     }
 }
