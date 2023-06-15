@@ -22,6 +22,20 @@
     <string name="moodify_desc">Melalui fitur ini kamu dapat mengetahui perasaan (mood) kamu saat ini. Setelah itu, kami dapat merekomendasikan beberapa hal yang sesuai dengan perasaan kamu hari ini. Yuk tunggu apalagi?</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
+    <string name="logout">Keluar</string>
+    <string name="moodify_result">Hasil Moodify</string>
+    <string name="halo">Halo!</string>
+    <string name="what_music">Musik apa yang kamu suka?</string>
+    <string name="next">Lanjut</string>
+    <string name="back">Kembali</string>
+    <string name="wow">WOW!</string>
+    <string name="how_film">Bagaimana dengan film?</string>
+    <string name="how_book">Buku apa yang kamu sukai?</string>
+    <string name="then">Lalu,</string>
+    <string name="mood">Mood:</string>
+    <string name="recommendation">Rekomendasi:</string>
+    <string name="not_rec">Maaf, kami belum ada rekomendasi untuk mood kamu</string>
+    <string name="error_pred">Error Terjadi. Ulangi pengambilan photo dan cek koneksi internet Anda.</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_jurnal">Jurnal</string>

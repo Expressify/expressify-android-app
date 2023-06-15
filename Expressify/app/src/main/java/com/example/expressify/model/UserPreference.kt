@@ -38,6 +38,10 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
 
     suspend fun logout() {
         dataStore.edit { pref ->
+            pref[NAME_KEY] = ""
+            pref[EMAIL_KEY] = ""
+            pref[ID_KEY] = ""
+            pref[TOKEN_KEY] = ""
             pref[STATE_KEY] = false
         }
     }

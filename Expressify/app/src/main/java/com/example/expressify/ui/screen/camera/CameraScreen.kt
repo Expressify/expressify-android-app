@@ -18,15 +18,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Autorenew
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.RoundaboutLeft
 import androidx.compose.material.icons.sharp.Lens
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +46,8 @@ import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import com.example.expressify.R
 import java.io.File
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executor
@@ -55,29 +65,24 @@ private suspend fun Context.getCameraProvider(): ProcessCameraProvider = suspend
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun CameraScreen() {
+fun CameraScreen(
+    onPredict: (String) -> Unit,
+    onCameraClose: () -> Unit
+) {
     val context = LocalContext.current
     val outputDirectory = getOutputDirectory(context)
     val cameraExecutor = Executors.newSingleThreadExecutor()
-    val shouldShowCamera: MutableState<Boolean> = remember {
-        mutableStateOf(true)
-    }
 
 
-    val shouldShowPhoto: MutableState<Boolean> = remember {
-        mutableStateOf(false)
-    }
-
-    val photoUri: MutableState<String> = remember {
-        mutableStateOf("")
-    }
+    val shouldShowPhoto: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    val photoUri: MutableState<String> = rememberSaveable { mutableStateOf("") }
+    val isFrontCamera: MutableState<Boolean> = rememberSaveable { mutableStateOf(true) }
 
     if (shouldShowPhoto.value) {
-        Log.d("Camera", photoUri.value)
-        Image(
-            painter = rememberImagePainter(Uri.parse(photoUri.value)),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+        ShowImageContent(
+            onClose = { shouldShowPhoto.value = false },
+            onPredict = { onPredict(URLEncoder.encode(photoUri.value, StandardCharsets.UTF_8.toString())) },
+            imageUri = Uri.parse(photoUri.value)
         )
     } else {
         CameraContent(
@@ -85,12 +90,19 @@ fun CameraScreen() {
             cameraExecutor,
             onImageCaptured = {uri ->
                 photoUri.value = uri.toString()
-                shouldShowCamera.value = false
                 shouldShowPhoto.value = true
                 cameraExecutor.shutdown()
             },
             onError = {
                 Log.d("Camera", "Error Happened")
+            },
+            isFrontCamera = isFrontCamera.value,
+            onDirectionChange = {
+                isFrontCamera.value = !isFrontCamera.value
+            },
+            onCameraClose = {
+                cameraExecutor.shutdown()
+                onCameraClose()
             }
         )
     }
@@ -101,20 +113,18 @@ fun CameraContent(
     outputDirectory: File,
     executor: Executor,
     onImageCaptured: (Uri) -> Unit,
-    onError: (ImageCaptureException) -> Unit
+    onError: (ImageCaptureException) -> Unit,
+    isFrontCamera: Boolean,
+    onDirectionChange: () -> Unit,
+    onCameraClose: () -> Unit,
 ) {
-    val lensFacing = CameraSelector.LENS_FACING_FRONT
+    val lensFacing = if (isFrontCamera) CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-
     val preview = Preview.Builder().build()
-    val previewView = remember {
-        PreviewView(context)
-    }
-    val imageCapture: ImageCapture = remember {
-        ImageCapture.Builder().build()
-    }
+    val previewView = remember { PreviewView(context) }
+    val imageCapture: ImageCapture = remember { ImageCapture.Builder().build() }
     val cameraSelector = CameraSelector.Builder()
         .requireLensFacing(lensFacing)
         .build()
@@ -138,6 +148,7 @@ fun CameraContent(
         AndroidView({previewView}, modifier = Modifier.fillMaxSize())
 
         IconButton(
+            modifier = Modifier.padding(bottom = 32.dp),
             onClick = {
                 Log.i("kilo", "ON CLICK")
                 takePhoto(
@@ -161,6 +172,82 @@ fun CameraContent(
                 )
             }
         )
+
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 32.dp, end = 32.dp),
+            onClick = onDirectionChange
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Autorenew,
+                contentDescription = "Change camera direction",
+                tint = Color.White,
+                modifier = Modifier.size(100.dp)
+            )
+        }
+
+        IconButton(
+            onClick = onCameraClose,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 8.dp, start = 8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = "Close",
+                tint = Color.White,
+                modifier = Modifier.size(100.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ShowImageContent(
+    onClose: () -> Unit,
+    onPredict: () -> Unit,
+    imageUri: Uri,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Image(
+            painter = rememberImagePainter(imageUri),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+        Button(
+            onClick = onPredict,
+            modifier = Modifier.padding(bottom = 8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Black
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Done,
+                contentDescription = "Predict",
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            Text(
+                text = "Prediksi mood",
+            )
+        }
+        IconButton(
+            onClick = onClose,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 8.dp, start = 8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = "Close",
+                tint = Color.Black,
+                modifier = Modifier.size(100.dp)
+            )
+        }
     }
 }
 

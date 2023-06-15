@@ -1,5 +1,6 @@
 package com.example.expressify
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -53,6 +54,8 @@ import com.example.expressify.ui.screen.artikel.ArtikelScreen
 import com.example.expressify.ui.screen.artikel.DetailScreen
 import com.example.expressify.ui.screen.camera.CameraScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
+import com.example.expressify.ui.screen.predict.PredictMoodScreen
+import com.example.expressify.ui.screen.profile.ProfileScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
 
@@ -130,7 +133,22 @@ fun ExpressifyApp(
                 }
             }
             composable(Screen.Register.route) {
-                RegisterScreen(onLoginClick = { navController.navigateUp() })
+                if (viewModel.isLogin.value) {
+                    LaunchedEffect(key1 = Unit) {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(route = Screen.Splash.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+                RegisterScreen(
+                    onLoginClick = { navController.navigateUp() },
+                    onRegister = { name, email, password, genrelist ->
+                        viewModel.register(name, email, password, genrelist)
+                    },
+                    isLoading = viewModel.progressBar.value
+                )
             }
             composable(Screen.Moodify.route) {
                 MoodifyScreen(navigateToCamera = {navController.navigate(Screen.Camera.route)})
@@ -150,7 +168,40 @@ fun ExpressifyApp(
                 DetailScreen(artikelId = id, navigateBack = { navController.navigateUp() })
             }
             composable(Screen.Camera.route) {
-                CameraScreen()
+                CameraScreen(
+                    onPredict = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.PredictMood.createRoute(it))
+                    },
+                    onCameraClose = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(Screen.Profil.route) {
+                ProfileScreen(
+                    name = viewModel.name.value,
+                    email = viewModel.email.value,
+                    onLogoutClick = {
+                        viewModel.logout()
+                        navController.popBackStack(
+                            route = Screen.Login.route,
+                            inclusive = false
+                        )
+                    }
+                )
+            }
+            composable(
+                route = Screen.PredictMood.route,
+                arguments = listOf(navArgument("uri"){
+                    type = NavType.StringType
+                })
+            ) {
+                val uri = it.arguments?.getString("uri") ?: ""
+                PredictMoodScreen(
+                    navigateBack = { navController.navigateUp() },
+                    uri = uri,
+                )
             }
         }
 

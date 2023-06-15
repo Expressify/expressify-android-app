@@ -117,11 +117,6 @@ fun MoodifyContent(
                     .weight(1f),
                 text = stringResource(id = R.string.camera),
                 onClick = onCameraButtonClick)
-            BigButton(
-                modifier = Modifier
-                    .weight(1f),
-                text = stringResource(id = R.string.gallery),
-                onClick = { /*TODO*/ })
         }
     }
 }

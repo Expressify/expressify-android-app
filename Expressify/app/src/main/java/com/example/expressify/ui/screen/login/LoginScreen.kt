@@ -29,6 +29,7 @@ import com.example.expressify.R
 import com.example.expressify.ui.screen.components.BigButton
 import com.example.expressify.ui.screen.components.InputText
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
@@ -115,7 +116,8 @@ fun LoginContent(
             onClick = onLoginClick,
             modifier = Modifier
                 .padding(start = 80.dp, end = 80.dp, bottom = 8.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            enabled = email.isNotEmpty() && password.isNotEmpty()
         )
         Row (
             horizontalArrangement = Arrangement.spacedBy(4.dp)
