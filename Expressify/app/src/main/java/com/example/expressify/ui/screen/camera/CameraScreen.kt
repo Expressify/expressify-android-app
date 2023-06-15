@@ -46,6 +46,8 @@ import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import com.example.expressify.R
 import java.io.File
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executor
@@ -64,7 +66,8 @@ private suspend fun Context.getCameraProvider(): ProcessCameraProvider = suspend
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CameraScreen(
-    onPredict: (String) -> Unit
+    onPredict: (String) -> Unit,
+    onCameraClose: () -> Unit
 ) {
     val context = LocalContext.current
     val outputDirectory = getOutputDirectory(context)
@@ -78,7 +81,7 @@ fun CameraScreen(
     if (shouldShowPhoto.value) {
         ShowImageContent(
             onClose = { shouldShowPhoto.value = false },
-            onPredict = { onPredict(photoUri.value) },
+            onPredict = { onPredict(URLEncoder.encode(photoUri.value, StandardCharsets.UTF_8.toString())) },
             imageUri = Uri.parse(photoUri.value)
         )
     } else {
@@ -96,6 +99,10 @@ fun CameraScreen(
             isFrontCamera = isFrontCamera.value,
             onDirectionChange = {
                 isFrontCamera.value = !isFrontCamera.value
+            },
+            onCameraClose = {
+                cameraExecutor.shutdown()
+                onCameraClose()
             }
         )
     }
@@ -109,6 +116,7 @@ fun CameraContent(
     onError: (ImageCaptureException) -> Unit,
     isFrontCamera: Boolean,
     onDirectionChange: () -> Unit,
+    onCameraClose: () -> Unit,
 ) {
     val lensFacing = if (isFrontCamera) CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
     val context = LocalContext.current
@@ -174,6 +182,20 @@ fun CameraContent(
             Icon(
                 imageVector = Icons.Filled.Autorenew,
                 contentDescription = "Change camera direction",
+                tint = Color.White,
+                modifier = Modifier.size(100.dp)
+            )
+        }
+
+        IconButton(
+            onClick = onCameraClose,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 8.dp, start = 8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = "Close",
                 tint = Color.White,
                 modifier = Modifier.size(100.dp)
             )

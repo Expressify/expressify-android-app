@@ -53,6 +53,7 @@ import com.example.expressify.ui.screen.register.RegisterScreen
 import com.example.expressify.ui.screen.artikel.ArtikelScreen
 import com.example.expressify.ui.screen.camera.CameraScreen
 import com.example.expressify.ui.screen.jurnal.JurnalScreen
+import com.example.expressify.ui.screen.predict.PredictMoodScreen
 import com.example.expressify.ui.screen.profile.ProfileScreen
 import com.example.expressify.ui.screen.splash.SplashScreen
 import com.example.expressify.ui.theme.ExpressifyTheme
@@ -131,7 +132,22 @@ fun ExpressifyApp(
                 }
             }
             composable(Screen.Register.route) {
-                RegisterScreen(onLoginClick = { navController.navigateUp() })
+                if (viewModel.isLogin.value) {
+                    LaunchedEffect(key1 = Unit) {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(route = Screen.Splash.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+                RegisterScreen(
+                    onLoginClick = { navController.navigateUp() },
+                    onRegister = { name, email, password, genrelist ->
+                        viewModel.register(name, email, password, genrelist)
+                    },
+                    isLoading = viewModel.progressBar.value
+                )
             }
             composable(Screen.Moodify.route) {
                 MoodifyScreen(navigateToCamera = {navController.navigate(Screen.Camera.route)})
@@ -145,9 +161,11 @@ fun ExpressifyApp(
             composable(Screen.Camera.route) {
                 CameraScreen(
                     onPredict = {
-                        navController.navigate(Screen.PredictMood.createRoute(it)) {
-                            popUpTo(Screen.Moodify.route)
-                        }
+                        navController.popBackStack()
+                        navController.navigate(Screen.PredictMood.createRoute(it))
+                    },
+                    onCameraClose = {
+                        navController.navigateUp()
                     }
                 )
             }
@@ -171,7 +189,10 @@ fun ExpressifyApp(
                 })
             ) {
                 val uri = it.arguments?.getString("uri") ?: ""
-
+                PredictMoodScreen(
+                    navigateBack = { navController.navigateUp() },
+                    uri = uri,
+                )
             }
         }
 

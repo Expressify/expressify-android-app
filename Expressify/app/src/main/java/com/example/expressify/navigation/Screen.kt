@@ -19,5 +19,6 @@ val routeWithoutTopBar = listOf(
     Screen.Splash.route,
     Screen.Login.route,
     Screen.Register.route,
-    Screen.Camera.route
+    Screen.Camera.route,
+    Screen.PredictMood.route
 )
