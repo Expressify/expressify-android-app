@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.expressify.di.Injection
+import com.example.expressify.ui.screen.artikel.DetailArtikelViewModel
 import com.example.expressify.ui.screen.jurnal.JurnalViewModel
 import com.example.expressify.ui.screen.predict.PredictMoodViewModel
 import com.example.expressify.ui.screen.register.RegisterViewModel
@@ -25,6 +26,9 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.NewInsta
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(Injection.provideUserRepository(context)) as T
+            }
+            modelClass.isAssignableFrom(DetailArtikelViewModel::class.java) -> {
+                DetailArtikelViewModel(Injection.provideArtikelRepository(context)) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

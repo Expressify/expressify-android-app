@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.expressify.R
 import com.example.expressify.model.Artikel
 import com.example.expressify.ui.theme.ExpressifyTheme
@@ -40,10 +41,10 @@ fun ArtikelItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
     ) {
         Row(modifier = modifier.fillMaxWidth()) {
-//            TODO: GANTI DENGAN ASYNC IMAGE
-            Image(
-                painter = painterResource(id = artikel.imageArtikel),
-                contentDescription = "artikel image",
+
+            AsyncImage(
+                model = artikel.image,
+                contentDescription = artikel.title,
                 contentScale = ContentScale.Crop,
                 modifier = modifier.width(60.dp)
             )
@@ -79,7 +80,15 @@ fun ArtikelItem(
 @Composable
 fun ArtikelItemView() {
     ExpressifyTheme {
-        ArtikelItem(artikel = Artikel(R.drawable.banner_poster, "Judul Artikel", "12 Mei 2023", "Lorem ipsum"))
+        ArtikelItem(
+            artikel = Artikel(
+                1,
+                "https://static.vecteezy.com/system/resources/previews/006/792/345/original/mental-health-blooming-human-brain-line-icon-mind-concept-love-life-new-page-illustration-free-vector.jpg",
+                "Judul Artikel",
+                "12 Mei 2023",
+                "Lorem ipsum", "none"
+            )
+        )
 
     }
 }

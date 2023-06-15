@@ -11,7 +11,10 @@ sealed class Screen (val route: String){
     object Register: Screen("register")
     object Camera: Screen("camera")
     object PredictMood: Screen("moodify/{uri}") {
-        fun createRoute(uri: String) ="moodify/$uri"
+        fun createRoute(uri: String) = "moodify/$uri"
+    }
+    object DetailArtikel: Screen("detail/{artikelId}"){
+        fun createRoute(artikelId: Long) = "detail/$artikelId"
     }
 }
 
@@ -20,5 +23,6 @@ val routeWithoutTopBar = listOf(
     Screen.Login.route,
     Screen.Register.route,
     Screen.Camera.route,
-    Screen.PredictMood.route
+    Screen.PredictMood.route,
+    Screen.DetailArtikel.route
 )

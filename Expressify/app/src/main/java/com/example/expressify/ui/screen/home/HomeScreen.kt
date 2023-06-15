@@ -3,6 +3,7 @@ package com.example.expressify.ui.screen.home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,6 +59,7 @@ import com.example.expressify.ui.theme.FourthColor
 fun HomeScreen(
     onClick: () -> Unit,
     moveToJurnal: () -> Unit,
+    navigateToDetailArtikel: (Long) -> Unit
 ) {
 
     val viewModel: JurnalViewModel = viewModel(
@@ -82,7 +84,7 @@ fun HomeScreen(
             onClick = onClick
         )
         Divider()
-        QuickListArtikel()
+        QuickListArtikel(navigateToDetail = navigateToDetailArtikel)
 
     }
 }
@@ -105,6 +107,7 @@ fun Banner(
 @Composable
 fun QuickListArtikel(
     modifier: Modifier = Modifier,
+    navigateToDetail: (Long) -> Unit,
 ) {
     Column {
         Text(
@@ -117,7 +120,7 @@ fun QuickListArtikel(
             modifier = modifier.padding(8.dp)
         ) {
             items(dummyArtikel, key = { it.title }) { artikel ->
-                ArtikelItem(artikel = artikel)
+                ArtikelItem(artikel = artikel, modifier = modifier.clickable(onClick = { navigateToDetail(artikel.id)}))
             }
         }
     }
