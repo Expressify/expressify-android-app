@@ -38,6 +38,8 @@
       <ul>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#problem-statement">Problem Statement</a></li>
+        <li><a href="#solution:-enhancing-mental well-being">Solution</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">List Features</a></li>
@@ -146,9 +148,12 @@ We welcome your feedback and would be happy to assist you with any questions or 
 
 All of references that I used on this project.
 
-* [Readme Template](https://github.com/othneildrew/Best-README-Template)
+* [Dicoding Jetpack Compose](https://www.dicoding.com/academies/445/corridor)
+* [Dicoding Android Intermediate](https://www.dicoding.com/academies/352)
+* [Dicoding Android Fundamental](https://www.dicoding.com/academies/14)
 * [Dicoding Android Beginner](https://www.dicoding.com/academies/52)
 * [Img Shields](https://shields.io)
+* [Readme Template](https://github.com/othneildrew/Best-README-Template)
 * [GitHub Pages](https://pages.github.com)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
