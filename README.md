@@ -38,7 +38,7 @@
       <ul>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#problem-statement">Problem Statement</a></li>
-        <li><a href="#Solution: Enhancing Mental Well-being">Solution</a></li>
+        <li><a href="#solution:-enhancing-mental well-being">Solution</a></li>
         <li><a href="#conclusion">Conclusion</a></li>
       </ul>
     </li>
